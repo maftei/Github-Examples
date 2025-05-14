@@ -1,8 +1,33 @@
-on: [push]
+name: Hello World Workflow
+
+on:
+  push:
+  pull_request:
 
 jobs:
   hello_world:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Echo current time
-        run: echo "The current server time is $(date)"
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Show current time
+        run: echo "🕒 The current server time is $(date)"
+
+      - name: Show GitHub actor
+        run: echo "👤 Workflow triggered by ${{ github.actor }}"
+
+      - name: List repo files
+        run: ls -alh
+
+      - name: Show last 3 commits
+        run: |
+         git log -3 --pretty=format:"%h - %an (%ar): %s"
+
+
+      - name: Run simple Python script
+        run: |
+          echo "print('🐍 Hello from Python!')" > script.py
+          echo "print('Today is great to automate things.')" >> script.py
+          python3 script.py
